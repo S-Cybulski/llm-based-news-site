@@ -1,16 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from './config/db.js';
-import { getArticles } from './config/newsAPI.js'
+import articleRoutes from "./routes/article.route.js";
 
 dotenv.config();
 
 const app = express();
 
-app.get("/feed", async (req,res) => {
-    const articles = await getArticles();
-    res.send(articles);
-});
+app.use("/api/articles", articleRoutes);
 
 app.listen(5000, () => {
     connectDB();
