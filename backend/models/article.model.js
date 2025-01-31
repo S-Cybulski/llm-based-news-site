@@ -7,6 +7,9 @@ const articleSchema = new mongoose.Schema({
     },
     description:{
         type: String
+    },
+    urlToImage:{
+        type: String,
     }
 }, {
     timestamps: true //createdAt and updatedAt

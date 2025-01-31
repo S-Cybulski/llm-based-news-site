@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { getNewsArticles } from '../config/newsAPI.js';
 import Article from "../models/article.model.js";
 
@@ -8,11 +7,15 @@ export const createArticles = async (req,res) => {
     try {
         const articles = await getNewsArticles();
 
-        articles.forEach(article => {
-            const newArticle = new Article(article);
-
-            newArticle.save();
-        });
+        for (const article of articles) {
+            // Now await works as expected in this loop
+            const existingArticle = await Article.findOne({ title: article.title });
+        
+            if (!existingArticle) {
+                const newArticle = new Article(article);
+                await newArticle.save();
+            }
+        };
 
         res.status(201).json({ success: true, data: articles});
     }

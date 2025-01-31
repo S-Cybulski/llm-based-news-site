@@ -1,12 +1,15 @@
 import NewsAPI from "newsapi"
+import dotenv from "dotenv";
 
-const newsapi = new NewsAPI('686ccda8db764847ba36405631e2fddb');
+dotenv.config();
+
+const newsapi = new NewsAPI(process.env.NEWS_API_KEY);
 
 export const getNewsArticles = async () => {
     try {
         const response = await newsapi.v2.topHeadlines({
             language: 'en',
-            pageSize: 5
+            pageSize: 9
         });
         return response.articles;
         //console.log(response.articles[0]);
