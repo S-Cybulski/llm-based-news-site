@@ -8,14 +8,12 @@ import Navbar from "./components/Navbar";
 function App() {
 
   return (
-    <BrowserRouter>
       <Box minH="100vh">
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
         </Routes>
       </Box>
-    </BrowserRouter>
   );
     
 }

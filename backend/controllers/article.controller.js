@@ -1,3 +1,4 @@
+import { query } from '../config/huggingFaceAPI.js';
 import { getNewsArticles } from '../config/newsAPI.js';
 import Article from "../models/article.model.js";
 
@@ -10,9 +11,20 @@ export const createArticles = async (req,res) => {
         for (const article of articles) {
             // Now await works as expected in this loop
             const existingArticle = await Article.findOne({ title: article.title });
-        
+            
             if (!existingArticle) {
                 const newArticle = new Article(article);
+
+                if(newArticle.content == null){
+                    continue;
+                }
+
+                let summary = await query(newArticle.content);
+
+                newArticle.content = summary[0].summary_text;
+
+                console.log(summary[0].summary_text);
+
                 await newArticle.save();
             }
         };
