@@ -11,8 +11,9 @@ const articleSchema = new mongoose.Schema({
     urlToImage:{
         type: String,
     },
-    content:{
-        type: String
+    url:{
+        type: String,
+        required: true
     }
 }, {
     timestamps: true //createdAt and updatedAt

@@ -3,7 +3,7 @@ export async function query(data) {
 		"https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
 		{
 			headers: {
-				Authorization: "Bearer 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",
+				Authorization: 'bearer ' + process.env.HUGGING_FACE_API,
 				"Content-Type": "application/json",
 			},
 			method: "POST",
