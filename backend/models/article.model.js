@@ -14,6 +14,9 @@ const articleSchema = new mongoose.Schema({
     url:{
         type: String,
         required: true
+    },
+    summary:{
+        type: String
     }
 }, {
     timestamps: true 

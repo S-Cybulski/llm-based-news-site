@@ -35,9 +35,3 @@ const splitIntoChunks = async (content) => {
 
     return chunks
 };
-
-console.log(await createSummary("https://www.bbc.co.uk/news/articles/c805mjxe2y9o"));
-
-console.log(await createSummary("https://www.bbc.co.uk/news/articles/c4g3yyv4egeo"));
-
-console.log(await createSummary("https://www.bbc.co.uk/news/articles/c9d528g755qo"));

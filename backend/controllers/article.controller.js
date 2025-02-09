@@ -1,6 +1,6 @@
-import { query } from "../config/huggingFaceAPI.js";
 import { getNewsArticles } from "../config/newsAPI.js";
 import Article from "../models/article.model.js";
+import { createSummary } from "./summary.controller.js";
 
 export const createArticles = async (req, res) => {
 
@@ -15,17 +15,9 @@ export const createArticles = async (req, res) => {
             if (!existingArticle) {
                 const newArticle = new Article(article);
 
-                // if(newArticle.content == null){
-                //     continue;
-                // }
-
                 console.log(newArticle);
 
-                //let summary = await query(newArticle.content);
-
-                //newArticle.content = summary[0].summary_text;
-
-                //console.log(summary[0].summary_text);
+                newArticle.summary = await createSummary(article.url);
 
                 await newArticle.save();
             }

@@ -8,14 +8,16 @@ const ArticleCard = ( {article} ) => {
         overflow='hidden'
         transition='all 0.3s'
         _hover={{transform: "translateY(-5px)", shadow: "x1"}}
+        overflowY={'auto'}
+        h={400}
         >
             <Image src={article.urlToImage} alt={article.title}  w={'full'} objectFit={'cover'} />
             <Box p={4}>
             <Heading as='h3' size='md' mb={2}>
                 {article.title};
             </Heading>
-            <Text fontSize='x1' mb={4}>
-                {article.content}
+            <Text fontSize='x1' mb={4} whiteSpace={'pre-line'}>
+                {article.summary}
             </Text>
             </Box>
         </Box>

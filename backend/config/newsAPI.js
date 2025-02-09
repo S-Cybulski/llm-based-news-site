@@ -9,7 +9,8 @@ export const getNewsArticles = async () => {
     try {
         const response = await newsapi.v2.topHeadlines({
             language: "en",
-            pageSize: 9,
+            pageSize: 6,
+            sources: "bbc-news"
         });
 
         return response.articles;
