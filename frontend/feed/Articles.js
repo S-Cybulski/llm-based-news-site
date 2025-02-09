@@ -6,6 +6,6 @@ export const newsFeed = create((set) => ({
     fetchArticles: async () => {
         const res = await fetch("http://localhost:5000/api/articles");
         const data = await res.json();
-        set({ articles: data.data});
-    }
+        set({ articles: data.data });
+    },
 }));

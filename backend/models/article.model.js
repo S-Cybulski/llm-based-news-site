@@ -16,7 +16,7 @@ const articleSchema = new mongoose.Schema({
         required: true
     }
 }, {
-    timestamps: true //createdAt and updatedAt
+    timestamps: true 
 });
 
 const Article = mongoose.model('Article', articleSchema);
