@@ -1,4 +1,4 @@
-import { Box, Heading, Image, Text } from "@chakra-ui/react"
+import { Box, Heading, Image, Text, useColorModeValue } from "@chakra-ui/react"
 
 const ArticleCard = ( {article} ) => {
     return (
@@ -10,6 +10,7 @@ const ArticleCard = ( {article} ) => {
         _hover={{transform: "translateY(-5px)", shadow: "x1"}}
         overflowY={'auto'}
         h={400}
+        bg={useColorModeValue("white", "gray.700")}
         >
             <Image src={article.urlToImage} alt={article.title}  w={'full'} objectFit={'cover'} />
             <Box p={4}>
