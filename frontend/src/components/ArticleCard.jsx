@@ -11,11 +11,13 @@ const ArticleCard = ( {article} ) => {
         overflowY={'auto'}
         h={400}
         bg={useColorModeValue("white", "gray.700")}
+        as='a'
+        href={article.url}
         >
-            <Image src={article.urlToImage} alt={article.title}  w={'full'} objectFit={'cover'} />
+            <Image src={article.urlToImage} alt={""}  w={'full'} objectFit={'cover'} />
             <Box p={4}>
             <Heading as='h3' size='md' mb={2}>
-                {article.title};
+                {article.title}
             </Heading>
             <Text fontSize='x1' mb={4} whiteSpace={'pre-line'}>
                 {article.summary}

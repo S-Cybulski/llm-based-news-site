@@ -5,6 +5,7 @@ const chunkSize = 4096;
 
 export const createSummary = async (url) => {
     const content = await getContent(url);
+    //must split into chunks otherwise content will exceed size limit
     const chunks = await splitIntoChunks(content);
     const summarisedChunks = [];
 
