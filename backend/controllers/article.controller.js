@@ -1,11 +1,14 @@
 import { getNewsArticles } from "../config/newsAPI.js";
 import Article from "../models/article.model.js";
 import { createSummary } from "./summary.controller.js";
+import { classifyArticle } from "../config/huggingFaceAPI.js";
 
 export const createArticles = async (req, res) => {
 
     try {
-        const articles = await getNewsArticles();
+        let articles;
+
+        articles = await getNewsArticles();
 
         for (const article of articles) {
             const existingArticle = await Article.findOne({
@@ -15,11 +18,12 @@ export const createArticles = async (req, res) => {
             if (!existingArticle) {
                 const newArticle = new Article(article);
 
-                console.log(newArticle);
-
+                newArticle.category = await classifyArticle(newArticle.description);
                 newArticle.summary = await createSummary(article.url);
-
+                
                 await newArticle.save();
+
+                console.log(article.title + ": Successful \n\n");
             }
         }
 

@@ -8,6 +8,9 @@ const articleSchema = new mongoose.Schema({
     description:{
         type: String
     },
+    category:{
+        type: String
+    },
     urlToImage:{
         type: String,
     },

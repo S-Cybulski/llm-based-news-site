@@ -8,7 +8,7 @@ export const getContent = async (url) => {
         const page = await browser.newPage();
         await page.goto(url);
         const hostname = new URL(url).hostname.replace("www.", "").split(".")[0];
-        let selectors = "";
+        let selectors = "p, div";
 
         switch (hostname) {
             case "bbc":
@@ -18,7 +18,7 @@ export const getContent = async (url) => {
                 selectors = "#main p";
                 break;
             case "cbc":
-                selectors = ".story p";
+                selectors = ".story p, p#MainContentDescription";
                 break;
             default:
                 break;
