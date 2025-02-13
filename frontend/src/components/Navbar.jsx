@@ -40,10 +40,10 @@ const Navbar = () => {
                     <Link to={"/entertainment"}>Entertainment</Link>
                 </Text>
                 <Text>
-                    <Link to={"/general"}>General</Link>
+                    <Link to={"/health"}>Health</Link>
                 </Text>
                 <Text>
-                    <Link to={"/health"}>Health</Link>
+                    <Link to={"/politics"}>Politics</Link>
                 </Text>
                 <Text>
                     <Link to={"/science"}>Science</Link>
@@ -53,6 +53,9 @@ const Navbar = () => {
                 </Text>
                 <Text>
                     <Link to={"/technology"}>Technology</Link>
+                </Text>
+                <Text>
+                    <Link to={"/world-news"}>World News</Link>
                 </Text>
 
                 <HStack spacing={2} alignItems={"center"}>
