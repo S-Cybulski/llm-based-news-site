@@ -1,0 +1,7 @@
+.feed-container {
+    display: flex;
+    background-color: white;
+    align-items: center;
+    justify-content: center;
+    max-width: 60%;
+}

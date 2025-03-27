@@ -1,0 +1,108 @@
+.navbar-container {
+    display: grid;
+    grid-template-rows: 3fr 2fr;
+    max-width: 100vw;
+    color: white;
+    height: max(50px, 8vh, 10vh);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    z-index: 1000;
+}
+
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    color: black;
+    height: 100%;
+    text-align: center;
+}
+
+.top-navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.bottom-navbar {
+    color: white;
+    background: #457BEE;
+    height: 100%;
+}
+
+.logo {
+    font-size: max(1.5rem, 1.5vw, 2.5vh);
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    color: black;
+}
+
+.category-container {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: auto;
+    align-items: center;
+    gap: 15px;
+    height: 100%;
+    width: 60%;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.category {
+    display: flex;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1rem, 1.5vw, 1.5vh);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    text-align: center;
+    height: 100%;
+    padding: 0 10px;
+    cursor: pointer
+}
+
+.category:hover {
+    background: linear-gradient(#457BEE,#457BEE, #3A5EC4);
+    border-radius: 5px;
+    border-bottom: #2C4BA8 7px solid;
+}
+
+.search-bar-container {
+    display: flex;
+    gap: 30px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    width: 100%;
+    max-width: 250px;
+    gap: 10px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 5px 40px 5px 15px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+    border-radius: 10px;
+}
+
+.search-bar input:focus {
+    border-color: black;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Add shadow on focus */
+}

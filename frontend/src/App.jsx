@@ -11,13 +11,14 @@ import SciencePage from "./pages/SciencePage";
 import SportsPage from "./pages/SportsPage";
 import TechnologyPage from "./pages/TechnologyPage";
 import WorldNewsPage from "./pages/WorldNewsPage";
+import TestPage from "./pages/TestPage";
 
 
 function App() {
 
   return (
       <Box minH="100vh">
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/business" element={<BusinessPage />} />
@@ -28,6 +29,7 @@ function App() {
           <Route path="/sports" element={<SportsPage />} />
           <Route path="/technology" element={<TechnologyPage />} />
           <Route path="/world-news" element={<WorldNewsPage />} />
+          <Route path="/test" element={<TestPage />} />
         </Routes>
       </Box>
   );
