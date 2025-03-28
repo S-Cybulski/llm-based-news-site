@@ -4,7 +4,7 @@ import Feed from "../components/Feed";
 
 const TestPage = () => {
     return (
-        <div className="body-container">
+        <div className="page-container">
             <Navbar></Navbar>
             <Feed></Feed>
         </div>
