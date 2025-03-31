@@ -8,7 +8,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use(express.json());
 app.use("/api/articles", articleRoutes);
+
 
 app.listen(PORT, () => {
     connectDB();

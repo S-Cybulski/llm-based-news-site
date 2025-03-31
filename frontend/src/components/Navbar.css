@@ -39,6 +39,7 @@
     font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
     color: black;
+    cursor: pointer;
 }
 
 .category-container {
@@ -72,8 +73,6 @@
 
 .category:hover {
     background: linear-gradient(#457BEE,#457BEE, #3A5EC4);
-    border-radius: 5px;
-    border-bottom: #2C4BA8 7px solid;
 }
 
 .search-bar-container {
