@@ -99,22 +99,26 @@ const ArticleCard = ({
 
 const SummaryCard = ({ summary, onClose, currentArticle }) => {
     return (
-        <div className="summary-container">
-            <img src={currentArticle.urlToImage} width={400}></img>
-            <h1 className="title">{currentArticle.title}</h1>
-            <p className="summary">{summary}</p>
-            <a href={currentArticle.url}>Read the full article</a>
-            <span className="close" onClick={onClose}>
-                &times;
-            </span>
+        <div className="backdrop">
+            <div className="summary-container">
+                <img src={currentArticle.urlToImage} width={400}></img>
+                <h1 className="title">{currentArticle.title}</h1>
+                <p className="summary">{summary}</p>
+                <a href={currentArticle.url}>Read the full article</a>
+                <span className="close" onClick={onClose}>
+                    &times;
+                </span>
+            </div>
         </div>
     );
 };
 
 const Loading = () => {
     return (
-        <div className="summary-container">
-            <h2>Loading...</h2>
+        <div className="backdrop">
+            <div className="summary-container">
+                <h2>Loading...</h2>
+            </div>
         </div>
     );
 }
