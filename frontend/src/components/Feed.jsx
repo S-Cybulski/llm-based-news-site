@@ -8,6 +8,11 @@ const Feed = () => {
     const { fetchSummary } = articleSummary();
     const [summary, setSummary] = useState("");
     const [showSummary, setShowSummary] = useState(false);
+    const [currentArticle, setCurrentArticle] = useState({
+        title: "",
+        url: "",
+        urlToImage: "",
+    });
 
     const [loading, setLoading] = useState(true);
 
@@ -21,13 +26,17 @@ const Feed = () => {
 
     useEffect(() => {
         console.log("Summary updated:", summary);
-    }, [summary]);  // This will run every time summary changes
-    
+    }, [summary]); // This will run every time summary changes
 
     const onClose = () => {
         console.log("Closing summary");
         setShowSummary(false);
         setSummary("");
+        setCurrentArticle({
+            title: "",
+            url: "",
+            urlToImage: "",
+        });
     };
 
     return (
@@ -41,10 +50,14 @@ const Feed = () => {
                     fetchSummary={fetchSummary}
                     setShowSummary={setShowSummary}
                     setSummary={setSummary}
+                    loading={loading}
+                    setLoading={setLoading}
+                    setCurrentArticle={setCurrentArticle}
                 />
             ))}
+            {loading && <Loading />}
             {showSummary && console.log("State:", summary)}
-            {showSummary && <SummaryCard summary={summary} onClose={onClose} />}
+            {showSummary && <SummaryCard summary={summary} onClose={onClose} currentArticle={currentArticle}/>}
         </div>
     );
 };
@@ -56,12 +69,24 @@ const ArticleCard = ({
     fetchSummary,
     setShowSummary,
     setSummary,
+    loading,
+    setLoading,
+    setCurrentArticle
 }) => {
     const handleClick = async () => {
-        const summarisedData = await fetchSummary(article.url);
-        console.log("Fetched summary:", summarisedData.summary);
-        setSummary(summarisedData);
-        setShowSummary(true);
+        if (!loading) {
+            setLoading(true);
+            const summarisedData = await fetchSummary(article.url);
+            console.log("Fetched summary:", summarisedData.summary);
+            setSummary(summarisedData);
+            setCurrentArticle({
+                title: article.title,
+                url: article.url,
+                urlToImage: article.urlToImage,
+            });
+            setShowSummary(true);
+            setLoading(false);
+        }
     };
     return (
         <div className={`article-card ${className}`} onClick={handleClick}>
@@ -72,14 +97,26 @@ const ArticleCard = ({
     );
 };
 
-const SummaryCard = ({ summary, onClose }) => {
+const SummaryCard = ({ summary, onClose, currentArticle }) => {
     return (
         <div className="summary-container">
-            <span className="close" onClick={onClose}>&times;</span>
-            <h1>Summary</h1>
-            <p>{summary}</p>
+            <img src={currentArticle.urlToImage} width={400}></img>
+            <h1 className="title">{currentArticle.title}</h1>
+            <p className="summary">{summary}</p>
+            <a href={currentArticle.url}>Read the full article</a>
+            <span className="close" onClick={onClose}>
+                &times;
+            </span>
         </div>
     );
 };
+
+const Loading = () => {
+    return (
+        <div className="summary-container">
+            <h2>Loading...</h2>
+        </div>
+    );
+}
 
 export default Feed;
