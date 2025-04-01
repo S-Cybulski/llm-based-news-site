@@ -3,7 +3,7 @@ import "./Feed.css";
 import { useEffect, useState } from "react";
 import { articleSummary } from "../../feed/Articles";
 
-const Feed = () => {
+const Feed = ({ category }) => {
     const { fetchArticles, articles } = newsFeed();
     const { fetchSummary } = articleSummary();
     const [summary, setSummary] = useState("");
@@ -13,7 +13,6 @@ const Feed = () => {
         url: "",
         urlToImage: "",
     });
-
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -41,23 +40,34 @@ const Feed = () => {
 
     return (
         <div className="feed-container">
-            {articles.map((article, index) => (
-                <ArticleCard
-                    key={article._id}
-                    article={article}
-                    className={index % 2 === 0 ? "dark-card" : "light-card"}
-                    index={index}
-                    fetchSummary={fetchSummary}
-                    setShowSummary={setShowSummary}
-                    setSummary={setSummary}
-                    loading={loading}
-                    setLoading={setLoading}
-                    setCurrentArticle={setCurrentArticle}
-                />
-            ))}
+            {articles
+                .filter(
+                    (article) =>
+                        category === "general" || article.category === category
+                )
+                .map((article, index) => (
+                    <ArticleCard
+                        key={article._id}
+                        article={article}
+                        className={index % 2 === 0 ? "dark-card" : "light-card"}
+                        index={index}
+                        fetchSummary={fetchSummary}
+                        setShowSummary={setShowSummary}
+                        setSummary={setSummary}
+                        loading={loading}
+                        setLoading={setLoading}
+                        setCurrentArticle={setCurrentArticle}
+                    />
+                ))}
             {loading && <Loading />}
             {showSummary && console.log("State:", summary)}
-            {showSummary && <SummaryCard summary={summary} onClose={onClose} currentArticle={currentArticle}/>}
+            {showSummary && (
+                <SummaryCard
+                    summary={summary}
+                    onClose={onClose}
+                    currentArticle={currentArticle}
+                />
+            )}
         </div>
     );
 };
@@ -71,7 +81,7 @@ const ArticleCard = ({
     setSummary,
     loading,
     setLoading,
-    setCurrentArticle
+    setCurrentArticle,
 }) => {
     const handleClick = async () => {
         if (!loading) {
@@ -121,6 +131,6 @@ const Loading = () => {
             </div>
         </div>
     );
-}
+};
 
 export default Feed;

@@ -1,12 +1,20 @@
 import Navbar from "../components/NavbarRedo";
 import "../App.css";
 import Feed from "../components/Feed";
+import { useEffect, useState } from "react";
 
 const TestPage = () => {
+    const [category, setCategory] = useState("general");
+
+    useEffect(() => {
+        console.log("Category changed:", category);
+    }
+    , [category]);
+
     return (
         <div className="page-container">
-            <Navbar></Navbar>
-            <Feed></Feed>
+            <Navbar setCategory={setCategory}></Navbar>
+            <Feed category={category}></Feed>
         </div>
     )
 
