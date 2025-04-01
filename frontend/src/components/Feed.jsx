@@ -8,12 +8,12 @@ const Feed = ({ category }) => {
     const { fetchSummary } = articleSummary();
     const [summary, setSummary] = useState("");
     const [showSummary, setShowSummary] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [currentArticle, setCurrentArticle] = useState({
         title: "",
         url: "",
         urlToImage: "",
     });
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,7 +25,9 @@ const Feed = ({ category }) => {
 
     useEffect(() => {
         console.log("Summary updated:", summary);
-    }, [summary]); // This will run every time summary changes
+    }, [summary]);
+
+    articles.sort((a,b ) => new Date(b.publishedAt) - new Date(a.publishedAt));
 
     const onClose = () => {
         console.log("Closing summary");

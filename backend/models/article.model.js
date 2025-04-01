@@ -18,8 +18,9 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    summary:{
-        type: String
+    publishedAt:{
+        type: String,
+        required: true
     }
 }, {
     timestamps: true 

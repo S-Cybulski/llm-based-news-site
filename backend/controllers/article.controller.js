@@ -29,11 +29,9 @@ export const createArticles = async (req, res) => {
                     const newArticle = new Article(article);
     
                     newArticle.category = await classifyArticle(newArticle.description);
-                    newArticle.summary = await createSummary(article.url);
+                    //newArticle.summary = await createSummary(article.url);
                     
                     await newArticle.save();
-    
-                    console.log(article.title + ": Successful \n\n");
                 }
             } catch (error) {
                 console.log("Error saving article: ", error.message);
@@ -41,10 +39,9 @@ export const createArticles = async (req, res) => {
             }
         }
 
-        res.status(201).json({ success: true, data: articles });
+        //res.status(201).json({ success: true, data: articles });
     } catch (error) {
-        console.error("Error in saving article:", error.message);
-        res.status(500).json({ success: false, message: "Server Error" });
+        console.error("Error in saving articles:", error.message);
     }
 
     isProcessing = false;
