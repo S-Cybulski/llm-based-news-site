@@ -3,7 +3,7 @@ import "./Feed.css";
 import { useEffect, useState } from "react";
 import { articleSummary } from "../../feed/Articles";
 
-const Feed = ({ category }) => {
+const Feed = ({ category, setArticles }) => {
     const { fetchArticles, articles } = newsFeed();
     const { fetchSummary } = articleSummary();
     const [summary, setSummary] = useState("");
@@ -27,7 +27,12 @@ const Feed = ({ category }) => {
         console.log("Summary updated:", summary);
     }, [summary]);
 
-    articles.sort((a,b ) => new Date(b.publishedAt) - new Date(a.publishedAt));
+    useEffect(() => {
+        const sortedArticles = [...articles].sort(
+            (a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)
+        );
+        setArticles(sortedArticles);
+    }, [articles, setArticles]);
 
     const onClose = () => {
         console.log("Closing summary");
