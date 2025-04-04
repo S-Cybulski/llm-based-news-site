@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./SearchBar.css";
+import { set } from "mongoose";
 
 const SearchBar = ({
     articles,
@@ -20,10 +21,21 @@ const SearchBar = ({
         setFilteredArticles(filtered);
     }, [value, articles]);
 
-    const handleClick = () => {
+    const handleClick = async (article) => {
         setHideSuggestions(true);
         setValue("");
         setLoading(true);
+
+        const summarisedData = await fetchSummary(article.url);
+        setSummary(summarisedData);
+        setShowSummary(true);
+        setCurrentArticle({
+            title: article.title,
+            url: article.url,
+            urlToImage: article.urlToImage,
+        });
+        setLoading(false);
+        setHideSuggestions(false);
     };
 
     return (
@@ -50,10 +62,7 @@ const SearchBar = ({
                             <div
                                 key={article._id}
                                 className="suggestion-item"
-                                onClick={() => {
-                                    setValue(article.title);
-                                    setHideSuggestions(true);
-                                }}
+                                onClick={() => handleClick(article)}
                             >
                                 {article.title}
                             </div>
