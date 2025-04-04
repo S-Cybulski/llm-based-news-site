@@ -1,39 +1,18 @@
-import { newsFeed } from "../../feed/Articles";
 import "./Feed.css";
-import { useEffect, useState } from "react";
-import { articleSummary } from "../../feed/Articles";
 
-const Feed = ({ category, setArticles }) => {
-    const { fetchArticles, articles } = newsFeed();
-    const { fetchSummary } = articleSummary();
-    const [summary, setSummary] = useState("");
-    const [showSummary, setShowSummary] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [currentArticle, setCurrentArticle] = useState({
-        title: "",
-        url: "",
-        urlToImage: "",
-    });
-
-    useEffect(() => {
-        const fetchData = async () => {
-            await fetchArticles();
-            setLoading(false);
-        };
-        fetchData();
-    }, [fetchArticles]);
-
-    useEffect(() => {
-        console.log("Summary updated:", summary);
-    }, [summary]);
-
-    useEffect(() => {
-        const sortedArticles = [...articles].sort(
-            (a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)
-        );
-        setArticles(sortedArticles);
-    }, [articles, setArticles]);
-
+const Feed = ({
+    category,
+    articles,
+    setShowSummary,
+    setSummary,
+    setCurrentArticle,
+    fetchSummary,
+    loading,
+    setLoading,
+    summary,
+    showSummary,
+    currentArticle,
+}) => {
     const onClose = () => {
         console.log("Closing summary");
         setShowSummary(false);

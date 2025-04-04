@@ -1,8 +1,15 @@
 import "./Navbar.css";
 import SearchBar from "./SearchBar";
 
-const Navbar = ({ setCategory, articles }) => {
-
+const Navbar = ({
+    setCategory,
+    articles,
+    fetchSummary,
+    setShowSummary,
+    setSummary,
+    setCurrentArticle,
+    setLoading,
+}) => {
     return (
         <div className="navbar-container">
             <div className="top-navbar">
@@ -14,7 +21,14 @@ const Navbar = ({ setCategory, articles }) => {
                         The News
                     </div>
                     <div className="search-bar-container">
-                        <SearchBar articles={articles} />
+                        <SearchBar
+                            articles={articles}
+                            fetchSummary={fetchSummary}
+                            setShowSummary={setShowSummary}
+                            setSummary={setSummary}
+                            setCurrentArticle={setCurrentArticle}
+                            setLoading={setLoading}
+                        />
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             height="50px"

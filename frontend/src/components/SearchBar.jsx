@@ -1,18 +1,30 @@
 import { useState, useEffect } from "react";
 import "./SearchBar.css";
 
-const SearchBar = ({ articles }) => {
+const SearchBar = ({
+    articles,
+    fetchSummary,
+    setShowSummary,
+    setSummary,
+    setCurrentArticle,
+    setLoading,
+}) => {
     const [value, setValue] = useState("");
     const [hideSuggestions, setHideSuggestions] = useState(false);
     const [filteredArticles, setFilteredArticles] = useState([]);
 
     useEffect(() => {
-        // Filter articles based on the search value
         const filtered = articles.filter((article) =>
             article.title.toLowerCase().includes(value.toLowerCase())
         );
         setFilteredArticles(filtered);
     }, [value, articles]);
+
+    const handleClick = () => {
+        setHideSuggestions(true);
+        setValue("");
+        setLoading(true);
+    };
 
     return (
         <div className="search-bar">
@@ -39,8 +51,8 @@ const SearchBar = ({ articles }) => {
                                 key={article._id}
                                 className="suggestion-item"
                                 onClick={() => {
-                                    setValue(article.title); // Set the clicked suggestion as the input value
-                                    setHideSuggestions(true); // Hide suggestions
+                                    setValue(article.title);
+                                    setHideSuggestions(true);
                                 }}
                             >
                                 {article.title}
