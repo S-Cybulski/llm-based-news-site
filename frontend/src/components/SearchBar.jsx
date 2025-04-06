@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./SearchBar.css";
-import { set } from "mongoose";
 
 const SearchBar = ({
     articles,

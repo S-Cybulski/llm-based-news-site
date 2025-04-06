@@ -1,10 +1,10 @@
 import { Container, VStack, Text, SimpleGrid } from "@chakra-ui/react";
 import { useEffect } from 'react';
-import { sportsFeed } from "../../feed/Articles";
+import { newsFeed } from "../../feed/Articles";
 import ArticleCard from "../components/ArticleCard";
 
-const SportsPage = () => {
-    const {fetchArticles, articles} = sportsFeed();
+const HomePage = () => {
+    const {fetchArticles, articles} = newsFeed();
     useEffect(() => {
         fetchArticles();
     }, [fetchArticles]);
@@ -18,7 +18,7 @@ const SportsPage = () => {
             fontWeight={"bold"}
             textAlign={"center"}
         >
-            Sports News!
+            Top Articles!
         </Text>
 
         <SimpleGrid
@@ -40,4 +40,4 @@ const SportsPage = () => {
     </Container>)
 };
 
-export default SportsPage;
+export default HomePage;

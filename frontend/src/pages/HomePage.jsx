@@ -1,43 +1,75 @@
-import { Container, VStack, Text, SimpleGrid } from "@chakra-ui/react";
-import { useEffect } from 'react';
+import Navbar from "../components/Navbar";
+import "../App.css";
+import Feed from "../components/Feed";
+import { useEffect, useState } from "react";
+import { articleSummary } from "../../feed/Articles";
 import { newsFeed } from "../../feed/Articles";
-import ArticleCard from "../components/ArticleCard";
 
-const HomePage = () => {
-    const {fetchArticles, articles} = newsFeed();
+const TestPage = () => {
+    const { fetchArticles, articles } = newsFeed();
+    const { fetchSummary } = articleSummary();
+    const [category, setCategory] = useState("general");
+    const [summary, setSummary] = useState("");
+    const [showSummary, setShowSummary] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [currentArticle, setCurrentArticle] = useState({
+        title: "",
+        url: "",
+        urlToImage: "",
+    });
+    const [sortedArticles, setSortedArticles] = useState([]);
+
+
     useEffect(() => {
-        fetchArticles();
+        const fetchData = async () => {
+            await fetchArticles();
+            setLoading(false);
+        };
+        fetchData();
     }, [fetchArticles]);
-    console.log("articles", articles);
-    
+
+    useEffect(() => {
+        const sorted = [...articles].sort(
+            (a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)
+        );
+        setSortedArticles(sorted);
+    }, [articles]);
+
+    useEffect(() => {
+        console.log("Category changed:", category);
+    }, [category]);
+
+    useEffect(() => {
+        console.log("Summary updated:", summary);
+    }, [summary]);
+
     return (
-    <Container maxW='container.xl' py={12}>
-        <VStack spacing={8}>
-        <Text 
-            fontSize={"30"}
-            fontWeight={"bold"}
-            textAlign={"center"}
-        >
-            Top Articles!
-        </Text>
-
-        <SimpleGrid
-            columns={{
-                base: 1,
-                md: 2,
-                lg: 3
-            }}
-            spacing={10}
-            w={"full"}
-
-            >
-            {articles.map((article) => (
-                <ArticleCard key={article._id} article={article} />
-            ))}
-
-        </SimpleGrid>
-        </VStack>
-    </Container>)
+        <div className="page-container">
+            <Navbar
+                setCategory={setCategory}
+                articles={sortedArticles}
+                fetchSummary={fetchSummary}
+                setShowSummary={setShowSummary}
+                setSummary={setSummary}
+                setCurrentArticle={setCurrentArticle}
+                setLoading={setLoading}
+            ></Navbar>
+            <Feed
+                category={category}
+                setCategory={setCategory}
+                articles={sortedArticles}
+                setShowSummary={setShowSummary}
+                setSummary={setSummary}
+                setCurrentArticle={setCurrentArticle}
+                fetchSummary={fetchSummary}
+                setLoading={setLoading}
+                loading={loading}
+                summary={summary}
+                showSummary={showSummary}
+                currentArticle={currentArticle}
+            ></Feed>
+        </div>
+    );
 };
 
-export default HomePage;
+export default TestPage;
