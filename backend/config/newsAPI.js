@@ -16,7 +16,7 @@ export const getNewsArticles = async () => {
         return response.articles;
 
     } catch (error) {
-        console.error(`Error: ${error.message}`);
+        console.error(`Error in fetching articles: ${error.message}`);
         process.exit(1);
     }
 };

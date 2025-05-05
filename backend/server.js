@@ -1,11 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
-import { connectDB } from "./config/db.js";
 import articleRoutes from "./routes/article.route.js";
-import { createArticles } from "./controllers/article.controller.js";
 import cron from "node-cron";
 import cors from "cors";
 import authRoutes from "./routes/auth.route.js";
+import { connectDB } from "./config/db.js";
+import { createArticles } from "./controllers/article.controller.js";
 
 dotenv.config();
 

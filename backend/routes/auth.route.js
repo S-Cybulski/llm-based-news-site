@@ -5,7 +5,7 @@ import User from '../models/user.model.js';
 
 const config = {
     mongoURI: process.env.MONGO_URI,
-    jwtSecret: 'hello'
+    jwtSecret: process.env.JWT_SECRET
 };
 
 const router = express.Router();

@@ -82,7 +82,7 @@ export const getArticles = async (req, res) => {
         }
         res.status(200).json({ success: true, data: articles });
     } catch (error) {
-        console.log("error in fetching articles:", error.message);
+        console.log("Error in fetching articles:", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
     }
 };
