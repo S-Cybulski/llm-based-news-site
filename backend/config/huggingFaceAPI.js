@@ -31,7 +31,7 @@ export async function query(data, parameters = defaultParameters) {
     }
 }
 
-export async function localQuery(text) {
+export async function localSummarise(text) {
     const response = await fetch("http://localhost:5001/api/summariseLocal", {
         method: "POST",
         headers: {
@@ -107,4 +107,20 @@ export async function embedSentence(sentences, source_sentence) {
         console.error(`Error in sentence transformer: ${error.message}`);
         process.exit(1);
     }
+}
+
+export async function getSentenceSimilarity(sourceSentence, comparisonSentences) {
+
+    const sentences = [sourceSentence, ...comparisonSentences]
+
+    const response = await fetch("http://localhost:5002/api/sentenceSimilarityLocal", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sentences: sentences }),
+    })
+
+    const data = await response.json();
+    return data.summary_text[0].summary_text;
 }

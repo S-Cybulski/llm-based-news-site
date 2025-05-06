@@ -1,4 +1,4 @@
-import { query, localQuery } from "../config/huggingFaceAPI.js";
+import { query, localSummarise } from "../config/huggingFaceAPI.js";
 import { getContent } from "../config/webScraper.js";
 
 const chunkSize = 4096;
@@ -10,7 +10,7 @@ export const createSummary = async (url) => {
     const summarisedChunks = [];
 
     for (const chunk of chunks) {
-        let summary = await localQuery(chunk);
+        let summary = await localSummarise(chunk);
         console.log(summary);
         summarisedChunks.push(summary);
         console.log("Summarising chunk: Success")
