@@ -12,6 +12,8 @@ const defaultParameters = {
 
 export async function query(data, parameters = defaultParameters) {
     try {
+        console.log("Summarising now");
+
         const response = await fetch(
             "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
             {
@@ -20,13 +22,22 @@ export async function query(data, parameters = defaultParameters) {
                     "Content-Type": "application/json",
                 },
                 method: "POST",
-                body: JSON.stringify({ 
-					inputs: data, 
-				}),
+                body: JSON.stringify({ inputs: data }),
             }
         );
+
+        console.log("Summarisation done");
+
+        const contentType = response.headers.get("content-type");
+
+        if (!response.ok || !contentType || !contentType.includes("application/json")) {
+            const errorText = await response.text(); // get HTML or text for logging
+            throw new Error(`Bad response: ${response.status} ${response.statusText}\n${errorText.slice(0, 200)}`);
+        }
+
         const result = await response.json();
         return result;
+
     } catch (error) {
         console.error(`Error with query: ${error.message}`);
         process.exit(1);
@@ -78,7 +89,7 @@ export async function embedSentence(sentences, source_sentence) {
         const result = await response.json();
         return result;
     } catch (error) {
-        console.error(`Error: ${error.message}`);
+        console.error(`Error in sentence transformer: ${error.message}`);
         process.exit(1);
     }
 }

@@ -12,6 +12,7 @@ export const createSummary = async (url) => {
     for (const chunk of chunks) {
         let summary = await query(chunk);
         summarisedChunks.push(summary[0].summary_text);
+        console.log("Summarising chunk: Success")
     }
 
     return summarisedChunks.join("\n\n");
