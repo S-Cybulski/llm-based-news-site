@@ -6,8 +6,8 @@
   "scripts": {
     "dev:backend": "nodemon backend/server.js",
     "dev:frontend": "npm --prefix frontend run dev",
-    "dev:embed": "python embed-server/embed_server.py",
-    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\""
+    "dev:summarisation": "python3 backend/config/pythonModels/summarisation.py",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\" \"npm run dev:summarisation\""
   }
   ,
   "type": "module",

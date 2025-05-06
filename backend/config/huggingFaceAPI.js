@@ -5,14 +5,11 @@ dotenv.config();
 const defaultParameters = {
     clean_up_tokenization_spaces: true,
     truncation: "longest_first",
-    generate_parameters: {
-
-    }
+    generate_parameters: {},
 };
 
 export async function query(data, parameters = defaultParameters) {
     try {
-        console.log("Summarising now");
 
         const response = await fetch(
             "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
@@ -26,28 +23,44 @@ export async function query(data, parameters = defaultParameters) {
             }
         );
 
-        console.log("Summarisation done");
-
-        const contentType = response.headers.get("content-type");
-
-        if (!response.ok || !contentType || !contentType.includes("application/json")) {
-            const errorText = await response.text(); // get HTML or text for logging
-            throw new Error(`Bad response: ${response.status} ${response.statusText}\n${errorText.slice(0, 200)}`);
-        }
-
         const result = await response.json();
-        return result;
-
+        return result[0].summary_text;
     } catch (error) {
         console.error(`Error with query: ${error.message}`);
         process.exit(1);
     }
 }
 
-export async function classifyArticle(data) {
+export async function localQuery(text) {
+    const response = await fetch("http://localhost:5001/api/summariseLocal", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: text }),
+    });
 
+    const data = await response.json();
+    return data.summary_text[0].summary_text;
+}
+
+export async function classifyArticle(data) {
     try {
-        const body = {"inputs": data, "parameters": {"candidate_labels": ["politics", "business", "technology", "science", "entertainment", "sports", "health" , "world news"]}};
+        const body = {
+            inputs: data,
+            parameters: {
+                candidate_labels: [
+                    "politics",
+                    "business",
+                    "technology",
+                    "science",
+                    "entertainment",
+                    "sports",
+                    "health",
+                    "world news",
+                ],
+            },
+        };
         const response = await fetch(
             "https://api-inference.huggingface.co/models/facebook/bart-large-mnli",
             {
@@ -60,17 +73,14 @@ export async function classifyArticle(data) {
             }
         );
         const result = await response.json();
-    
-        const highestIndex = result.scores.indexOf(Math.max(...result.scores));
-    
-        return result.labels[highestIndex];
-    }
 
-    catch (error) {
+        const highestIndex = result.scores.indexOf(Math.max(...result.scores));
+
+        return result.labels[highestIndex];
+    } catch (error) {
         console.error(`Error in classifying article: ${error.message}`);
         process.exit(1);
     }
-    
 }
 
 export async function embedSentence(sentences, source_sentence) {
@@ -83,7 +93,12 @@ export async function embedSentence(sentences, source_sentence) {
                     "Content-Type": "application/json",
                 },
                 method: "POST",
-                body: JSON.stringify({ inputs: {sentences : sentences, source_sentence: source_sentence} }),
+                body: JSON.stringify({
+                    inputs: {
+                        sentences: sentences,
+                        source_sentence: source_sentence,
+                    },
+                }),
             }
         );
         const result = await response.json();
@@ -93,5 +108,3 @@ export async function embedSentence(sentences, source_sentence) {
         process.exit(1);
     }
 }
-
-
