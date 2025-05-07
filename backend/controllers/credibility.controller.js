@@ -1,18 +1,39 @@
 import { getNewsArticles } from "../config/newsAPI.js";
 import { getSentenceSimilarity } from "../config/huggingFaceAPI.js";
 
+const splitIntoBatches = (arr, batchSize) => {
+    const batches = [];
+    for (let i = 0; i < arr.length; i += batchSize) {
+        batches.push(arr.slice(i, i + batchSize));
+    }
+    return batches;
+};
+
 export const assessCredibility = async (title) => {
     const articles = await getNewsArticles();
     const titles = articles.map((article) => article.title);
 
-    console.log("title", [title, ...titles]);
+    const batchSize = 32;
+    const batches = splitIntoBatches(titles, batchSize);
 
-    const similarityScores = await getSentenceSimilarity(title, titles);
-    console.log(similarityScores);
-    return similarityScores;
+    let similarityResults = [];
 
-}
+    for (const batch of batches) {
+        const similarityDict = await getSentenceSimilarity(title, batch);
+        
+        const filtered = Object.entries(similarityDict)
+            .filter(([_, score]) => score > 0.2)
+            .map(([title, score]) => ({ title, score }));
 
-const similarityScores = assessCredibility("Trumps tarriff on China is a disaster for the US economy");
+        similarityResults = [...similarityResults, ...filtered];
+    }
 
-console.log("Scores:" + similarityScores);
+    similarityResults.sort((a, b) => b.score - a.score);
+
+    console.log("Filtered and Sorted Similar Articles:", similarityResults);
+    return similarityResults;
+};
+
+const similarityScores = await assessCredibility("Danielle Smith's U.S. media remarks stoke reaction as party leaders hi…");
+
+console.log("Scores:", similarityScores);

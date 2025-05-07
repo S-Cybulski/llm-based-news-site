@@ -13,7 +13,7 @@ def summarise():
 
 if __name__ == '__main__':
     try:
-        app.run(port=5001)
         print("Summarisation Server running on: localhost:5001")
+        app.run(port=5001)
     except:
         print("Error: Summarisation server crashed")

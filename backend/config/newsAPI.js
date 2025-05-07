@@ -10,11 +10,11 @@ export const getNewsArticles = async () => {
         const response = await newsapi.v2.topHeadlines({
             language: "en",
             pageSize: 100,
-            sources: "bbc-news, independent, bbc-sport, cbc-news"
+            sources:
+                "bbc-news, independent, bbc-sport, cbc-news, the-guardian-uk, cnn, the-new-york-times, reuters, al-jazeera-english, fox-news",
         });
 
         return response.articles;
-
     } catch (error) {
         console.error(`Error in fetching articles: ${error.message}`);
         process.exit(1);

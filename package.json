@@ -8,7 +8,8 @@
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:summarisation": "python3 backend/config/pythonModels/summarisation.py",
     "dev:similarity": "python3 backend/config/pythonModels/sentenceSimilarity.py",
-    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\" \"npm run dev:summarisation\" \"npm run dev:similarity\""
+    "dev:classification": "python3 backend/config/pythonModels/classification.py",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\" \"npm run dev:summarisation\" \"npm run dev:similarity\" \"npm run dev:classification\""
   }
   ,
   "type": "module",

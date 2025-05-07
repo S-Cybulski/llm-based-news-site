@@ -1,7 +1,7 @@
 import { getNewsArticles } from "../config/newsAPI.js";
 import Article from "../models/article.model.js";
 import { createSummary } from "./summary.controller.js";
-import { classifyArticle } from "../config/huggingFaceAPI.js";
+import { classifyArticleLocal } from "../config/huggingFaceAPI.js";
 
 let isProcessing = false;
 
@@ -27,10 +27,8 @@ export const createArticles = async (req, res) => {
                 
                 if (!existingArticle) {
                     const newArticle = new Article(article);
-    
-                    newArticle.category = await classifyArticle(newArticle.description);
+                    newArticle.category = await classifyArticleLocal(newArticle.description);
                     //newArticle.summary = await createSummary(article.url);
-                    
                     await newArticle.save();
                 }
             } catch (error) {

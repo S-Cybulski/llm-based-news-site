@@ -10,7 +10,6 @@ const defaultParameters = {
 
 export async function query(data, parameters = defaultParameters) {
     try {
-
         const response = await fetch(
             "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
             {
@@ -42,6 +41,20 @@ export async function localSummarise(text) {
 
     const data = await response.json();
     return data.summary_text[0].summary_text;
+}
+
+export async function classifyArticleLocal(description) {
+    console.log("DEBUG: " + description);
+    const response = await fetch("http://localhost:5003/api/classifyLocal", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ description: description }),
+    });
+    const result = await response.json();
+    console.log("DEBUG:", result);
+    return result.category;
 }
 
 export async function classifyArticle(data) {
@@ -109,18 +122,23 @@ export async function embedSentence(sentences, source_sentence) {
     }
 }
 
-export async function getSentenceSimilarity(sourceSentence, comparisonSentences) {
+export async function getSentenceSimilarity(
+    sourceSentence,
+    comparisonSentences
+) {
+    const sentences = [sourceSentence, ...comparisonSentences];
 
-    const sentences = [sourceSentence, ...comparisonSentences]
-
-    const response = await fetch("http://localhost:5002/api/sentenceSimilarityLocal", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ sentences: sentences }),
-    })
+    const response = await fetch(
+        "http://localhost:5002/api/sentenceSimilarityLocal",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ sentences: sentences }),
+        }
+    );
 
     const data = await response.json();
-    return data.summary_text[0].summary_text;
+    return data.similarityArray;
 }
