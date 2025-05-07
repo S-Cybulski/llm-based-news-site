@@ -149,3 +149,27 @@ export async function getSentenceSimilarity(
     const data = await response.json();
     return data.similarityArray;
 }
+
+export async function compareArticles(
+    sourceArticle,
+    comparisonArticle
+) {
+    const response = await fetch(
+        "http://localhost:" +
+            process.env.MODEL_PORT +
+            "/api/gpt2local",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                sourceArticle: sourceArticle,
+                comparisonArticle: comparisonArticle,
+            }),
+        }
+    );
+
+    const data = await response.json();
+    return data.comparison;
+}
