@@ -30,7 +30,7 @@ def classify():
 
 if __name__ == '__main__':
     try:
-        print("Classifer server running on: localhost:50003")
+        print("Classifer server running on: localhost:5003")
         app.run(port=5003)
     except:
         print("Error: Classifier server crashed")

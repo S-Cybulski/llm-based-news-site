@@ -1,4 +1,4 @@
-from transformers import pipeline
+from transformers import pipeline,  GPT2Tokenizer, GPT2Model
 from flask import Flask, jsonify, request
 from sentence_transformers import SentenceTransformer, util
 from dotenv import load_dotenv
@@ -11,6 +11,9 @@ app = Flask(__name__)
 classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
 summariser = pipeline("summarization", model="facebook/bart-large-cnn")
 similarity_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+gpt_model = GPT2Model.from_pretrained('gpt2')
+
 
 @app.route('/api/classifyLocal', methods=['POST'])
 def classify():
@@ -57,6 +60,16 @@ def sentence_similarity():
         cosine_similarities[data['sentences'][i]]=(cosine_similarity.item())
 
     return jsonify({ 'similarityArray': cosine_similarities})
+
+@app.route('/api/gpt2Local', methods=['POST'])
+def gpt2():
+    data = request.json
+    article1 = data['sourceArticle']
+    article2 = data['comparisonArticle']
+    prompt = "Compare these two articles and find the most similar sentences. \ " + article1 + "\ " + article2
+    encoded_input = tokenizer(prompt, return_tensors='pt')
+    output = model(**encoded_input)
+    return jsonify({'comparison': output})
 
 if __name__ == '__main__':
     try:

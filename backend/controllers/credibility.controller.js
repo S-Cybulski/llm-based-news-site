@@ -9,7 +9,7 @@ const splitIntoBatches = (arr, batchSize) => {
     return batches;
 };
 
-export const assessCredibility = async (title) => {
+export const findSimilarArticles = async (title) => {
     const articles = await getNewsArticles();
     const titles = articles.map((article) => article.title);
 
@@ -34,6 +34,10 @@ export const assessCredibility = async (title) => {
     return similarityResults;
 };
 
-const similarityScores = await assessCredibility("Danielle Smith's U.S. media remarks stoke reaction as party leaders hi…");
+export const compareArticles = async () => {
+    
+}
+
+const similarityScores = await findSimilarArticles("Danielle Smith's U.S. media remarks stoke reaction as party leaders hi…");
 
 console.log("Scores:", similarityScores);
