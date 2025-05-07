@@ -20,7 +20,9 @@ app.use('/api/auth', authRoutes);
 app.listen(PORT, () => {
     connectDB();
     console.log("Server started at http://localhost:" + PORT);
-    createArticles();
+    setTimeout(() => {
+        createArticles();
+    }, 60_000);
     cron.schedule("30 * * * *", () => {
         createArticles();
     });

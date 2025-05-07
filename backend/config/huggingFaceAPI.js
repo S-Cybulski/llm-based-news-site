@@ -31,27 +31,32 @@ export async function query(data, parameters = defaultParameters) {
 }
 
 export async function localSummarise(text) {
-    const response = await fetch("http://localhost:5001/api/summariseLocal", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: text }),
-    });
+    const response = await fetch(
+        "http://localhost:" + process.env.MODEL_PORT + "/api/summariseLocal",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text: text }),
+        }
+    );
 
     const data = await response.json();
     return data.summary_text[0].summary_text;
 }
 
 export async function classifyArticleLocal(description) {
-    console.log("DEBUG: " + description);
-    const response = await fetch("http://localhost:5003/api/classifyLocal", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ description: description }),
-    });
+    const response = await fetch(
+        "http://localhost:" + process.env.MODEL_PORT + "/api/classifyLocal",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ description: description }),
+        }
+    );
     const result = await response.json();
     console.log("DEBUG:", result);
     return result.category;
@@ -129,7 +134,9 @@ export async function getSentenceSimilarity(
     const sentences = [sourceSentence, ...comparisonSentences];
 
     const response = await fetch(
-        "http://localhost:5002/api/sentenceSimilarityLocal",
+        "http://localhost:" +
+            process.env.MODEL_PORT +
+            "/api/sentenceSimilarityLocal",
         {
             method: "POST",
             headers: {

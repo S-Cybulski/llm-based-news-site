@@ -32,6 +32,6 @@ export const getContent = async (url) => {
         }, selectors);
 
         await browser.close();
-        return pageContent;
+        return pageContent.toString();
     });
 };

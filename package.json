@@ -6,10 +6,9 @@
   "scripts": {
     "dev:backend": "nodemon backend/server.js",
     "dev:frontend": "npm --prefix frontend run dev",
-    "dev:summarisation": "python3 backend/config/pythonModels/summarisation.py",
-    "dev:similarity": "python3 backend/config/pythonModels/sentenceSimilarity.py",
-    "dev:classification": "python3 backend/config/pythonModels/classification.py",
-    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\" \"npm run dev:summarisation\" \"npm run dev:similarity\" \"npm run dev:classification\""
+    "dev:modelServer": "python3 backend/config/pythonModels/modelServer.py",
+    "wait:modelServer": "wait-on http://localhost:5002",
+    "dev": "concurrently \"npm run dev:modelServer\" \"npm run dev:frontend\" \"npm run dev:backend\""
   }
   ,
   "type": "module",
