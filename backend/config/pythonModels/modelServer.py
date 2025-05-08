@@ -1,4 +1,4 @@
-from transformers import pipeline,  GPT2Tokenizer, GPT2Model
+from transformers import pipeline,  pipeline, set_seed, AutoModelForCausalLM, AutoTokenizer
 from flask import Flask, jsonify, request
 from sentence_transformers import SentenceTransformer, util
 from dotenv import load_dotenv
@@ -11,9 +11,18 @@ app = Flask(__name__)
 classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
 summariser = pipeline("summarization", model="facebook/bart-large-cnn")
 similarity_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
-gpt_model = GPT2Model.from_pretrained('gpt2')
+gpt_model = pipeline('text-generation', model='gpt2')
+set_seed(42);
 
+model_name = "Qwen/Qwen2.5-7B-Instruct"
+
+model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    torch_dtype="auto",
+    device_map="auto"
+)
+
+tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 @app.route('/api/classifyLocal', methods=['POST'])
 def classify():
@@ -64,12 +73,43 @@ def sentence_similarity():
 @app.route('/api/gpt2Local', methods=['POST'])
 def gpt2():
     data = request.json
+
     article1 = data['sourceArticle']
     article2 = data['comparisonArticle']
-    prompt = "Compare these two articles and find the most similar sentences. \ " + article1 + "\ " + article2
-    encoded_input = tokenizer(prompt, return_tensors='pt')
-    output = model(**encoded_input)
-    return jsonify({'comparison': output})
+
+    prompt = (
+    "Compare the following two news articles. "
+    "Provide bullet points listing:\n"
+    "1. Similarities\n"
+    "2. Differences\n\n"
+    f"Article 1:\n{article1}\n\n"
+    f"Article 2:\n{article2}"
+    )
+
+    messages = [
+        {"role": "system", "content": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant."},
+        {"role": "user", "content": prompt}
+    ]
+
+    text = tokenizer.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=True
+    )
+    model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+    generated_ids = model.generate(
+    **model_inputs,
+    max_new_tokens=512
+    )
+
+    generated_ids = [
+    output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+    ]
+
+    response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+    return jsonify({'comparison': response})
 
 if __name__ == '__main__':
     try:

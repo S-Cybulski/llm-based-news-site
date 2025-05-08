@@ -157,7 +157,7 @@ export async function compareArticles(
     const response = await fetch(
         "http://localhost:" +
             process.env.MODEL_PORT +
-            "/api/gpt2local",
+            "/api/gpt2Local",
         {
             method: "POST",
             headers: {

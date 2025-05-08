@@ -11,7 +11,7 @@ export const getNewsArticles = async () => {
             language: "en",
             pageSize: 100,
             sources:
-                "bbc-news, independent, bbc-sport, cbc-news, the-guardian-uk, the-new-york-times, al-jazeera-english",
+                "bbc-news, independent, bbc-sport, cbc-news, the-guardian-uk, the-new-york-times, al-jazeera-english, msn-news , sky-news"
         });
 
         return response.articles;

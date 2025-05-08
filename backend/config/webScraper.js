@@ -7,7 +7,9 @@ export const getContent = async (url) => {
     return puppeteer.launch({ headless: true }).then(async (browser) => {
         const page = await browser.newPage();
         await page.goto(url);
-        const hostname = new URL(url).hostname.replace("www.", "").split(".")[0];
+        const hostname = new URL(url).hostname
+            .replace("www.", "")
+            .split(".")[0];
         let selectors = "p, div";
 
         switch (hostname) {
@@ -20,7 +22,23 @@ export const getContent = async (url) => {
             case "cbc":
                 selectors = ".story p, p#MainContentDescription";
                 break;
+            case "theguardian":
+                selectors = "div.article-body-commercial-selector p";
+                break;
+            case "nytimes":
+                selectors = "section[name='articleBody'] p";
+                break;
+            case "aljazeera":
+                selectors = "div.wysiwyg p";
+                break;
+            case "msn":
+                selectors = "article p";
+                break;
+            case "sky":
+                selectors = "div.sdc-article-body p";
+                break;
             default:
+                selectors = "p, div";
                 break;
         }
 
@@ -32,6 +50,6 @@ export const getContent = async (url) => {
         }, selectors);
 
         await browser.close();
-        return pageContent.toString();
+        return pageContent;
     });
 };
