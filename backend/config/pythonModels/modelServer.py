@@ -11,8 +11,8 @@ app = Flask(__name__)
 classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
 summariser = pipeline("summarization", model="facebook/bart-large-cnn")
 similarity_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-gpt_model = pipeline('text-generation', model='gpt2')
-set_seed(42);
+fake_news_model = pipeline("text-classification", model="XSY/albert-base-v2-fakenews-discriminator")
+classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
 
 model_name = "Qwen/Qwen2.5-7B-Instruct"
 
@@ -27,8 +27,6 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 @app.route('/api/classifyLocal', methods=['POST'])
 def classify():
     data = request.json
-
-    classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
 
     candidate_labels = [
                         "politics",
@@ -46,6 +44,25 @@ def classify():
     highest_index = results['scores'].index(max(results['scores']))
 
     return jsonify({'category': results['labels'][highest_index]})
+
+@app.route('/api/sentimentAnalysisLocal', methods=['POST'])
+def sentimentAnalysis():
+    data = request.json
+
+    candidate_labels = ["neutral", "biased", "sensational", "opinionated"]
+
+    results = classifier(data['text'], candidate_labels)
+
+    fake_news = fake_news_model(data['title'])
+
+    if fake_news[0]['label'] == 'LABEL_1':
+        fake_news[0]['label'] = 'real'
+    else:
+        fake_news[0]['label'] = 'fake'
+
+    highest_index = results['scores'].index(max(results['scores']))
+
+    return jsonify({'category': results['labels'][highest_index], 'fake_news': fake_news[0]['label']})
 
 @app.route('/api/summariseLocal', methods=['POST'])
 def summarise():
@@ -70,8 +87,8 @@ def sentence_similarity():
 
     return jsonify({ 'similarityArray': cosine_similarities})
 
-@app.route('/api/gpt2Local', methods=['POST'])
-def gpt2():
+@app.route('/api/qwenLocal', methods=['POST'])
+def qwen():
     data = request.json
 
     article1 = data['sourceArticle']

@@ -1,4 +1,4 @@
-import { query, localSummarise } from "../config/huggingFaceAPI.js";
+import { summarise, localSummarise } from "../config/huggingFaceAPI.js";
 import { getContent } from "../config/webScraper.js";
 
 const chunkSize = 4096;

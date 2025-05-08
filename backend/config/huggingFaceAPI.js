@@ -8,7 +8,7 @@ const defaultParameters = {
     generate_parameters: {},
 };
 
-export async function query(data, parameters = defaultParameters) {
+export async function summarise(data, parameters = defaultParameters) {
     try {
         const response = await fetch(
             "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
@@ -60,6 +60,22 @@ export async function classifyArticleLocal(description) {
     const result = await response.json();
     console.log("DEBUG:", result);
     return result.category;
+}
+
+export async function sentimentAnalysisLocal(text, title) {
+    const response = await fetch(
+        "http://localhost:" + process.env.MODEL_PORT + "/api/sentimentAnalysisLocal",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text: text, title: title }),
+        }
+    );
+    const result = await response.json();
+    console.log("DEBUG:", result);
+    return result;
 }
 
 export async function classifyArticle(data) {
@@ -157,7 +173,7 @@ export async function compareArticles(
     const response = await fetch(
         "http://localhost:" +
             process.env.MODEL_PORT +
-            "/api/gpt2Local",
+            "/api/qwenLocal",
         {
             method: "POST",
             headers: {
