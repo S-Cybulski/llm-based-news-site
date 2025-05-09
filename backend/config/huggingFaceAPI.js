@@ -64,7 +64,9 @@ export async function classifyArticleLocal(description) {
 
 export async function sentimentAnalysisLocal(text, title) {
     const response = await fetch(
-        "http://localhost:" + process.env.MODEL_PORT + "/api/sentimentAnalysisLocal",
+        "http://localhost:" +
+            process.env.MODEL_PORT +
+            "/api/sentimentAnalysisLocal",
         {
             method: "POST",
             headers: {
@@ -166,22 +168,19 @@ export async function getSentenceSimilarity(
     return data.similarityArray;
 }
 
-export async function compareArticles(
-    sourceArticle,
-    comparisonArticle
-) {
+export async function compareArticles(sourceArticle, comparisonArticle) {
+    const sourceArticleSummary = await localSummarise(sourceArticle);
+    const comparisonArticleSummary = await localSummarise(comparisonArticle);
     const response = await fetch(
-        "http://localhost:" +
-            process.env.MODEL_PORT +
-            "/api/qwenLocal",
+        "http://localhost:" + process.env.MODEL_PORT + "/api/qwenLocal",
         {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                sourceArticle: sourceArticle,
-                comparisonArticle: comparisonArticle,
+                sourceArticle: sourceArticleSummary,
+                comparisonArticle: comparisonArticleSummary,
             }),
         }
     );

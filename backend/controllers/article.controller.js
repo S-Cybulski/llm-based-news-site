@@ -6,44 +6,45 @@ import { classifyArticleLocal } from "../config/huggingFaceAPI.js";
 let isProcessing = false;
 
 export const createArticles = async (req, res) => {
-
-    if(isProcessing) {
-        return;
+    if (isProcessing) {
+        return res.status(429).json({ message: "Already processing" });
     }
 
     isProcessing = true;
     console.log("Fetching Articles");
 
     try {
-        let articles;
+        const articles = await getNewsArticles();
 
-        articles = await getNewsArticles();
-        
         for (const article of articles) {
             try {
-                const existingArticle = await Article.findOne({
-                    title: article.title,
-                });
-                
+                const existingArticle = await Article.findOne({ title: article.title });
                 if (!existingArticle) {
                     const newArticle = new Article(article);
                     newArticle.category = await classifyArticleLocal(newArticle.description);
-                    //newArticle.summary = await createSummary(article.url);
                     await newArticle.save();
                 }
             } catch (error) {
                 console.log("Error saving article: ", error.message);
-                continue;
             }
         }
 
-        //res.status(201).json({ success: true, data: articles });
+        res.status(200).json({ message: "Articles fetched and stored" });
+
     } catch (error) {
         console.error("Error in saving articles:", error.message);
-    }
 
-    isProcessing = false;
+        if (res) {
+            res.status(500).json({ message: "Error fetching articles" });
+        } else {
+            console.error("Response object is undefined");
+        }
+
+    } finally {
+        isProcessing = false;
+    }
 };
+
 
 export const getArticles = async (req, res) => {
     try {

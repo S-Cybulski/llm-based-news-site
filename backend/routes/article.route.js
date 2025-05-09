@@ -9,10 +9,14 @@ const router = express.Router();
 
 router.post("/summarise", async (req, res) => {
     try {
-        console.log("Received request to summarise:", req.body);
-        const { url }   = req.body;
-        const summary = await createSummary(url);
+        const { url } = req.body;
 
+        if (!url || typeof url !== "string" || !url.startsWith("http")) {
+            return res.status(400).json({ error: "Invalid or missing URL" });
+        }
+
+        console.log("Received request to summarise:", req.body);
+        const summary = await createSummary(url);
         res.status(200).json({ summary });
     } catch (error) {
         console.error("Error in summarising article:", error);
